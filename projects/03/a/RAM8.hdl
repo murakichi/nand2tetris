@@ -14,6 +14,23 @@ CHIP RAM8 {
     IN in[16], load, address[3];
     OUT out[16];
 
+
     PARTS:
-    // Put your code here:
+    // 8つのレジスタを用意する
+    // selによって、どのレジスタにデータを書き込むかを決定する
+    // loadによって、データを書き込むかどうかを決定する
+    // load == 1のときは、データを書き込む
+    // load == 0のときは、データを書き込まない
+    // 例えば、sel=0のときは、aにデータを書き込む
+    DMux8Way(in=load, sel=address, a=loada, b=loadb, c=loadc, d=loadd, e=loade, f=loadf, g=loadg, h=loadh);
+    Register(in=in, load=loada, out=outa);
+    Register(in=in, load=loadb, out=outb);
+    Register(in=in, load=loadc, out=outc);
+    Register(in=in, load=loadd, out=outd);
+    Register(in=in, load=loade, out=oute);
+    Register(in=in, load=loadf, out=outf);
+    Register(in=in, load=loadg, out=outg);
+    Register(in=in, load=loadh, out=outh);
+    // 8つのレジスタの値をMux8Way16に入力し、selによってどのレジスタの値を出力するかを決定する
+    Mux8Way16(a=outa, b=outb, c=outc, d=outd, e=oute, f=outf, g=outg, h=outh, sel=address, out=out);
 }
